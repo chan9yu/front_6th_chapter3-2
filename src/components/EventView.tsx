@@ -1,4 +1,5 @@
-import { ChevronLeft, ChevronRight } from '@mui/icons-material';
+import ChevronLeft from '@mui/icons-material/ChevronLeft';
+import ChevronRight from '@mui/icons-material/ChevronRight';
 import { IconButton, MenuItem, Select, Stack, Typography } from '@mui/material';
 import type { SelectChangeEvent } from '@mui/material/Select';
 import type { Dispatch, SetStateAction } from 'react';

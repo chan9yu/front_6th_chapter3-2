@@ -1,4 +1,6 @@
-import { Delete, Edit, Notifications } from '@mui/icons-material';
+import Delete from '@mui/icons-material/Delete';
+import Edit from '@mui/icons-material/Delete';
+import Notifications from '@mui/icons-material/Notifications';
 import { Box, IconButton, Stack, Typography } from '@mui/material';
 
 import { notificationOptions } from '../constants/notifications';

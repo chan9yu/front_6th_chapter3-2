@@ -1,4 +1,4 @@
-import { Close } from '@mui/icons-material';
+import Close from '@mui/icons-material/Close';
 import { Alert, AlertTitle, IconButton, Stack } from '@mui/material';
 
 import { useNotifications } from '../hooks/useNotifications';
