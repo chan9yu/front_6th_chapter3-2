@@ -11,7 +11,7 @@ import {
   setupMockHandlerDeletion,
   setupMockHandlerUpdating,
 } from '../__mocks__/handlersUtils';
-import App from '../App';
+import { App } from '../App';
 import { server } from '../setupTests';
 import { Event } from '../types';
 
