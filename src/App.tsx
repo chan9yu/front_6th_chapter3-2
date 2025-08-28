@@ -94,5 +94,3 @@ export function App() {
     </Box>
   );
 }
-
-export default App;
