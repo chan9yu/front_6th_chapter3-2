@@ -1,5 +1,5 @@
 import type { Event } from '../../types';
-import { createRepeatEvents } from '../../utils/repeatUtils';
+import { repeatHelper } from '../../utils/repeatUtils';
 
 describe('repeatUtils', () => {
   describe('createRepeatEvents', () => {
@@ -28,7 +28,7 @@ describe('repeatUtils', () => {
         },
       };
 
-      const result = createRepeatEvents(event);
+      const result = repeatHelper.createRepeatEvents(event);
 
       expect(result).toHaveLength(1);
       expect(result[0].id).toBe('1');
@@ -46,7 +46,7 @@ describe('repeatUtils', () => {
         },
       };
 
-      const result = createRepeatEvents(event);
+      const result = repeatHelper.createRepeatEvents(event);
 
       expect(result).toHaveLength(3);
       expect(result[0].date).toBe('2025-01-01');
@@ -64,7 +64,7 @@ describe('repeatUtils', () => {
         },
       };
 
-      const result = createRepeatEvents(event);
+      const result = repeatHelper.createRepeatEvents(event);
 
       expect(result).toHaveLength(3);
       expect(result[0].date).toBe('2025-01-01');
@@ -82,7 +82,7 @@ describe('repeatUtils', () => {
         },
       };
 
-      const result = createRepeatEvents(event);
+      const result = repeatHelper.createRepeatEvents(event);
 
       expect(result).toHaveLength(3);
       expect(result[0].date).toBe('2025-01-01');
@@ -99,7 +99,7 @@ describe('repeatUtils', () => {
           endDate: '2027-01-01',
         },
       };
-      const result = createRepeatEvents(event);
+      const result = repeatHelper.createRepeatEvents(event);
 
       expect(result).toHaveLength(3);
       expect(result[0].date).toBe('2025-01-01');
@@ -117,7 +117,7 @@ describe('repeatUtils', () => {
         },
       };
 
-      const result = createRepeatEvents(event);
+      const result = repeatHelper.createRepeatEvents(event);
 
       expect(result).toHaveLength(3);
       expect(result[0].date).toBe('2025-01-01');
@@ -134,7 +134,7 @@ describe('repeatUtils', () => {
         },
       };
 
-      const result = createRepeatEvents(event);
+      const result = repeatHelper.createRepeatEvents(event);
 
       const ids = result.map((e) => e.id);
       const uniqueIds = new Set(ids);
@@ -151,7 +151,7 @@ describe('repeatUtils', () => {
         },
       };
 
-      const result = createRepeatEvents(event);
+      const result = repeatHelper.createRepeatEvents(event);
 
       result.forEach((repeatEvent) => {
         expect(repeatEvent.title).toBe('테스트 이벤트');
@@ -174,7 +174,7 @@ describe('repeatUtils', () => {
         },
       };
 
-      const result = createRepeatEvents(event);
+      const result = repeatHelper.createRepeatEvents(event);
 
       expect(result).toHaveLength(3);
       expect(result[result.length - 1].date).toBe('2025-01-03');
@@ -190,7 +190,7 @@ describe('repeatUtils', () => {
         },
       };
 
-      const result = createRepeatEvents(event);
+      const result = repeatHelper.createRepeatEvents(event);
 
       expect(result).toHaveLength(1);
       expect(result[0].date).toBe('2025-01-01');
@@ -205,7 +205,7 @@ describe('repeatUtils', () => {
         },
       };
 
-      const result = createRepeatEvents(event);
+      const result = repeatHelper.createRepeatEvents(event);
       const lastEvent = result[result.length - 1];
 
       expect(result.length).toBeGreaterThan(1);
@@ -222,7 +222,7 @@ describe('repeatUtils', () => {
           endDate: '2025-03-31',
         },
       };
-      const result = createRepeatEvents(event);
+      const result = repeatHelper.createRepeatEvents(event);
 
       expect(result).toHaveLength(3);
       expect(result[0].date).toBe('2025-01-31');
@@ -240,7 +240,7 @@ describe('repeatUtils', () => {
           endDate: '2026-02-28',
         },
       };
-      const result = createRepeatEvents(event);
+      const result = repeatHelper.createRepeatEvents(event);
 
       expect(result).toHaveLength(3);
       expect(result[0].date).toBe('2024-02-29');
