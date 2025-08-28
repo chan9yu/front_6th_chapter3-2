@@ -1,7 +1,8 @@
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
 
-import { Event, EventForm } from '../types';
+import type { Event, EventForm } from '../types';
+import { repeatHelper } from '../utils/repeatUtils';
 
 export const useEventOperations = (editing: boolean, onSave?: () => void) => {
   const [events, setEvents] = useState<Event[]>([]);
@@ -31,11 +32,22 @@ export const useEventOperations = (editing: boolean, onSave?: () => void) => {
           body: JSON.stringify(eventData),
         });
       } else {
-        response = await fetch('/api/events', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(eventData),
-        });
+        if (eventData.repeat?.type !== 'none') {
+          const eventWithId = { ...eventData, id: 'temp-id' } as Event;
+          const repeatEvents = repeatHelper.createRepeatEvents(eventWithId);
+
+          response = await fetch('/api/events-list', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ events: repeatEvents }),
+          });
+        } else {
+          response = await fetch('/api/events', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(eventData),
+          });
+        }
       }
 
       if (!response.ok) {
@@ -79,5 +91,10 @@ export const useEventOperations = (editing: boolean, onSave?: () => void) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { events, fetchEvents, saveEvent, deleteEvent };
+  return {
+    events,
+    fetchEvents,
+    saveEvent,
+    deleteEvent,
+  };
 };
