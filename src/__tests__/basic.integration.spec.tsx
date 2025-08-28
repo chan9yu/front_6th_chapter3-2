@@ -143,3 +143,32 @@ describe('반복 일정 기능', () => {
     });
   });
 });
+
+describe('반복 일정 표시', () => {
+  it('캘린더 뷰에서 반복 일정을 아이콘을 넣어 구분하여 표시한다.', async () => {
+    setupMockHandlerCreation();
+
+    const { user } = setup(<App />);
+
+    await saveRepeatSchedule(user, {
+      title: '반복 아이콘 테스트',
+      date: '2025-10-01',
+      startTime: '10:00',
+      endTime: '11:00',
+      repeat: {
+        type: 'weekly',
+        interval: 1,
+        endDate: '2025-12-31',
+      },
+    });
+
+    expect(screen.queryByDisplayValue('반복 아이콘 테스트')).not.toBeInTheDocument();
+
+    const eventTitles = await screen.findAllByText('반복 아이콘 테스트');
+    expect(eventTitles.length).toBeGreaterThan(0);
+
+    const repeatIcons = screen.getAllByTestId('repeat-icon');
+    expect(repeatIcons.length).toBeGreaterThan(0);
+    expect(repeatIcons[0]).toBeInTheDocument();
+  });
+});
