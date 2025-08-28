@@ -1,6 +1,7 @@
 import Delete from '@mui/icons-material/Delete';
 import Edit from '@mui/icons-material/Delete';
 import Notifications from '@mui/icons-material/Notifications';
+import Repeat from '@mui/icons-material/Repeat';
 import { Box, IconButton, Stack, Typography } from '@mui/material';
 
 import { notificationOptions } from '../constants/notifications';
@@ -24,6 +25,7 @@ export function EventListItem({ event, isNotified, onEdit, onDelete }: EventList
         <Stack>
           <Stack direction="row" spacing={1} alignItems="center">
             {isNotified && <Notifications color="error" />}
+            {event.repeat.type !== 'none' && <Repeat data-testid="repeat-icon" />}
             <Typography
               fontWeight={isNotified ? 'bold' : 'normal'}
               color={isNotified ? 'error' : 'inherit'}
