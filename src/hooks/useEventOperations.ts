@@ -1,5 +1,6 @@
 import { useSnackbar } from 'notistack';
 import { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import type { Event, EventForm } from '../types';
 import { repeatHelper } from '../utils/repeatUtils';
@@ -38,8 +39,8 @@ export const useEventOperations = (editing: boolean, onSave?: () => void) => {
         });
       } else {
         if (eventData.repeat?.type !== 'none') {
-          const eventWithId = { ...eventData, id: 'temp-id' } as Event;
-          const repeatEvents = repeatHelper.createRepeatEvents(eventWithId);
+          const event: Event = { ...eventData, id: uuidv4() };
+          const repeatEvents = repeatHelper.createRepeatEvents(event);
 
           response = await fetch('/api/events-list', {
             method: 'POST',
