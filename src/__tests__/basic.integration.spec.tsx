@@ -1,5 +1,5 @@
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent, { type UserEvent } from '@testing-library/user-event';
 import { SnackbarProvider } from 'notistack';
 import type { ReactElement } from 'react';
@@ -194,14 +194,11 @@ describe('반복 종료', () => {
 
     expect(screen.queryByDisplayValue('반복 종료 테스트')).not.toBeInTheDocument();
 
-    const eventList = screen.getByTestId('event-list');
     await screen.findAllByText('반복 종료 테스트');
-    const eventItems = eventList.querySelectorAll('[data-testid="event-list"] > div');
-    const matchingEvents = Array.from(eventItems).filter((item) =>
-      item.textContent?.includes('반복 종료 테스트')
-    );
 
-    expect(matchingEvents).toHaveLength(5);
+    const eventList = screen.getByTestId('event-list');
+    const eventTexts = within(eventList).getAllByText('반복 종료 테스트');
+    expect(eventTexts).toHaveLength(5);
 
     const expectedDates = ['2025-10-01', '2025-10-02', '2025-10-03', '2025-10-04', '2025-10-05'];
     expectedDates.forEach((date) => expect(screen.getByText(date)).toBeInTheDocument());
@@ -228,14 +225,11 @@ describe('반복 종료', () => {
 
     expect(screen.queryByDisplayValue('최대 일자 반복 테스트')).not.toBeInTheDocument();
 
-    const eventList = screen.getByTestId('event-list');
     await screen.findAllByText('최대 일자 반복 테스트');
-    const eventItems = eventList.querySelectorAll('[data-testid="event-list"] > div');
-    const matchingEvents = Array.from(eventItems).filter((item) =>
-      item.textContent?.includes('최대 일자 반복 테스트')
-    );
 
-    expect(matchingEvents).toHaveLength(5);
+    const eventList = screen.getByTestId('event-list');
+    const eventTexts = within(eventList).getAllByText('최대 일자 반복 테스트');
+    expect(eventTexts).toHaveLength(5);
 
     const expectedDates = ['2025-10-01', '2025-10-08', '2025-10-15', '2025-10-22', '2025-10-29'];
     expectedDates.forEach((date) => expect(screen.getByText(date)).toBeInTheDocument());
