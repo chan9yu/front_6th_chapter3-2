@@ -26,10 +26,15 @@ export const useEventOperations = (editing: boolean, onSave?: () => void) => {
     try {
       let response;
       if (editing) {
+        const updatedEventData: EventForm = {
+          ...eventData,
+          repeat: { type: 'none', interval: 0 },
+        };
+
         response = await fetch(`/api/events/${(eventData as Event).id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(eventData),
+          body: JSON.stringify(updatedEventData),
         });
       } else {
         if (eventData.repeat?.type !== 'none') {

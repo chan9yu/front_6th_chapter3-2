@@ -1,5 +1,5 @@
 import Delete from '@mui/icons-material/Delete';
-import Edit from '@mui/icons-material/Delete';
+import Edit from '@mui/icons-material/Edit';
 import Notifications from '@mui/icons-material/Notifications';
 import Repeat from '@mui/icons-material/Repeat';
 import { Box, IconButton, Stack, Typography } from '@mui/material';
@@ -54,7 +54,7 @@ export function EventListItem({ event, isNotified, onEdit, onDelete }: EventList
           <Typography>알림:&nbsp;{notificationLabel}</Typography>
         </Stack>
         <Stack>
-          <IconButton aria-label="Edit event" onClick={onEdit}>
+          <IconButton aria-label="Edit event" onClick={onEdit} data-testid="event-edit-button">
             <Edit />
           </IconButton>
           <IconButton aria-label="Delete event" onClick={onDelete}>
