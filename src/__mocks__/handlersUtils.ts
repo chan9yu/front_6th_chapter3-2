@@ -119,6 +119,17 @@ export const setupMockHandlerCreationRepeat = (initEvents = [] as Event[]) => {
       }
 
       return HttpResponse.json({ error: 'Event not found' }, { status: 404 });
+    }),
+    http.delete('/api/events/:id', ({ params }) => {
+      const id = params.id as string;
+      const eventIndex = mockEvents.findIndex((event) => event.id === id);
+
+      if (eventIndex > -1) {
+        mockEvents.splice(eventIndex, 1);
+        return new HttpResponse(null, { status: 204 });
+      }
+
+      return HttpResponse.json({ error: 'Event not found' }, { status: 404 });
     })
   );
 };

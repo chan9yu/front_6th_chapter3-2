@@ -325,3 +325,40 @@ describe('반복 일정 단일 수정', () => {
     expect(remainingRepeatIcons.length).toBeLessThan(repeatIcons.length);
   });
 });
+
+describe('반복 일정 단일 삭제', () => {
+  it('반복일정을 삭제하면 해당 일정만 삭제된다.', async () => {
+    setupMockHandlerCreationRepeat();
+
+    const { user } = setup(<App />);
+
+    await saveRepeatSchedule(user, {
+      title: '반복 일정 삭제 테스트',
+      date: '2025-10-01',
+      startTime: '10:00',
+      endTime: '11:00',
+      repeat: {
+        type: 'daily',
+        interval: 1,
+        endDate: '2025-10-05',
+      },
+    });
+
+    await screen.findAllByText('반복 일정 삭제 테스트');
+    const eventList = screen.getByTestId('event-list');
+    const eventTexts = within(eventList).getAllByText('반복 일정 삭제 테스트');
+    expect(eventTexts).toHaveLength(5);
+
+    const deleteButtons = screen.getAllByLabelText('Delete event');
+    expect(deleteButtons.length).toBeGreaterThan(0);
+    await user.click(deleteButtons[0]);
+
+    const newEventTexts = within(eventList).getAllByText('반복 일정 삭제 테스트');
+    expect(newEventTexts).toHaveLength(4);
+
+    const expectedDates = ['2025-10-02', '2025-10-03', '2025-10-04', '2025-10-05'];
+    expectedDates.forEach((date) => expect(screen.getByText(date)).toBeInTheDocument());
+
+    expect(screen.queryByText('2025-10-01')).not.toBeInTheDocument();
+  });
+});
