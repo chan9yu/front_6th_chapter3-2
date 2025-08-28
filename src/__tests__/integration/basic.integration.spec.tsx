@@ -9,9 +9,9 @@ import {
   setupMockHandlerCreationRepeat,
   setupMockHandlerMonthlyRepeat,
   setupMockHandlerYearlyRepeat,
-} from '../__mocks__/handlersUtils';
-import { App } from '../App';
-import type { Event, RepeatType } from '../types';
+} from '../../__mocks__/handlersUtils';
+import { App } from '../../App';
+import type { Event, RepeatType } from '../../types';
 
 const setup = (element: ReactElement) => {
   const theme = createTheme();
