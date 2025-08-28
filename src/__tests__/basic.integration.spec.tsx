@@ -238,3 +238,90 @@ describe('반복 종료', () => {
     expect(screen.queryByText('2025-11-05')).not.toBeInTheDocument();
   });
 });
+
+describe('반복 일정 단일 수정', () => {
+  it('반복일정을 수정하면 단일 일정으로 변경된다.', async () => {
+    setupMockHandlerCreationRepeat();
+
+    const { user } = setup(<App />);
+
+    await saveRepeatSchedule(user, {
+      title: '반복 일정 수정 테스트',
+      date: '2025-10-01',
+      startTime: '10:00',
+      endTime: '11:00',
+      repeat: {
+        type: 'daily',
+        interval: 1,
+        endDate: '2025-10-05',
+      },
+    });
+
+    await screen.findAllByText('반복 일정 수정 테스트');
+    const eventList = screen.getByTestId('event-list');
+    const eventTexts = within(eventList).getAllByText('반복 일정 수정 테스트');
+    expect(eventTexts).toHaveLength(5);
+
+    const editButtons = screen.getAllByTestId('event-edit-button');
+    await user.click(editButtons[0]);
+
+    await screen.findByDisplayValue('반복 일정 수정 테스트');
+
+    const titleInput = screen.getByDisplayValue('반복 일정 수정 테스트');
+    await user.clear(titleInput);
+    await user.type(titleInput, '수정된 단일 일정');
+
+    const submitButton = screen.getByRole('button', { name: '일정 수정' });
+    await user.click(submitButton);
+
+    expect(screen.queryByDisplayValue('수정된 단일 일정')).not.toBeInTheDocument();
+
+    const updatedEvents = await screen.findAllByText('수정된 단일 일정');
+    expect(updatedEvents.length).toBeGreaterThan(0);
+
+    const remainingEventTexts = within(eventList).getAllByText('반복 일정 수정 테스트');
+    expect(remainingEventTexts).toHaveLength(4);
+  });
+
+  it('반복일정 아이콘도 사라진다.', async () => {
+    setupMockHandlerCreationRepeat();
+
+    const { user } = setup(<App />);
+
+    await saveRepeatSchedule(user, {
+      title: '아이콘 테스트',
+      date: '2025-10-01',
+      startTime: '10:00',
+      endTime: '11:00',
+      repeat: {
+        type: 'weekly',
+        interval: 1,
+        endDate: '2025-10-15',
+      },
+    });
+
+    const repeatIcons = screen.getAllByTestId('repeat-icon');
+    expect(repeatIcons.length).toBeGreaterThan(0);
+
+    await screen.findAllByText('아이콘 테스트');
+
+    const editButtons = screen.getAllByTestId('event-edit-button');
+    expect(editButtons.length).toBeGreaterThan(0);
+    await user.click(editButtons[0]);
+
+    await screen.findByRole('button', { name: '일정 수정' });
+
+    const titleInput = screen.getByLabelText('제목');
+    await user.clear(titleInput);
+    await user.type(titleInput, '단일 아이콘 테스트');
+
+    const submitButton = screen.getByRole('button', { name: '일정 수정' });
+    await user.click(submitButton);
+
+    const updatedEventTexts = await screen.findAllByText('단일 아이콘 테스트');
+    expect(updatedEventTexts.length).toBeGreaterThan(0);
+
+    const remainingRepeatIcons = screen.queryAllByTestId('repeat-icon');
+    expect(remainingRepeatIcons.length).toBeLessThan(repeatIcons.length);
+  });
+});

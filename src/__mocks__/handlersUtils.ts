@@ -107,6 +107,18 @@ export const setupMockHandlerCreationRepeat = (initEvents = [] as Event[]) => {
       });
       mockEvents.push(...events);
       return HttpResponse.json(events, { status: 201 });
+    }),
+    http.put('/api/events/:id', async ({ params, request }) => {
+      const id = params.id as string;
+      const updatedEvent = (await request.json()) as Event;
+      const eventIndex = mockEvents.findIndex((event) => event.id === id);
+
+      if (eventIndex > -1) {
+        mockEvents[eventIndex] = { ...mockEvents[eventIndex], ...updatedEvent };
+        return HttpResponse.json(mockEvents[eventIndex]);
+      }
+
+      return HttpResponse.json({ error: 'Event not found' }, { status: 404 });
     })
   );
 };
