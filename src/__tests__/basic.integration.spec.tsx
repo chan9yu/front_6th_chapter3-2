@@ -3,15 +3,14 @@ import { render, screen } from '@testing-library/react';
 import userEvent, { type UserEvent } from '@testing-library/user-event';
 import { SnackbarProvider } from 'notistack';
 import type { ReactElement } from 'react';
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import {
-  createEventsListHandler,
-  monthlyRepeatEvents,
-  yearlyRepeatEvents,
+  setupMockHandlerCreation,
+  setupMockHandlerMonthlyRepeat,
+  setupMockHandlerYearlyRepeat,
 } from '../__mocks__/handlersUtils';
 import { App } from '../App';
-import { server } from '../setupTests';
 import type { Event, RepeatType } from '../types';
 
 const setup = (element: ReactElement) => {
@@ -89,13 +88,13 @@ describe('반복 일정 기능', () => {
 
     await saveRepeatSchedule(user, {
       title: '반복 테스트 일정',
-      date: '2025-01-15',
+      date: '2025-10-15',
       startTime: '10:00',
       endTime: '11:00',
       repeat: {
         type: 'weekly',
         interval: 1,
-        endDate: '2025-02-15',
+        endDate: '2025-12-15',
       },
     });
 
@@ -104,19 +103,19 @@ describe('반복 일정 기능', () => {
 
   describe('특별한 날짜의 반복 일정 처리', () => {
     it('31일 매월 반복 시 해당 일자에만 일정이 생성된다.', async () => {
-      server.use(createEventsListHandler(monthlyRepeatEvents));
+      setupMockHandlerMonthlyRepeat();
 
       const { user } = setup(<App />);
 
       await saveRepeatSchedule(user, {
         title: '31일 매월 반복',
-        date: '2025-01-31',
+        date: '2025-10-31',
         startTime: '14:00',
         endTime: '15:00',
         repeat: {
           type: 'monthly',
           interval: 1,
-          endDate: '2025-04-30',
+          endDate: '2025-12-30',
         },
       });
 
@@ -124,19 +123,19 @@ describe('반복 일정 기능', () => {
     });
 
     it('윤년 2월 29일 매년 반복 시 해당 일자에만 일정이 생성된다.', async () => {
-      server.use(createEventsListHandler(yearlyRepeatEvents));
+      setupMockHandlerYearlyRepeat();
 
       const { user } = setup(<App />);
 
       await saveRepeatSchedule(user, {
         title: '윤년 29일 매년 반복',
-        date: '2024-02-29',
+        date: '2024-10-29',
         startTime: '09:00',
         endTime: '10:00',
         repeat: {
           type: 'yearly',
           interval: 1,
-          endDate: '2027-02-28',
+          endDate: '2027-10-28',
         },
       });
 
