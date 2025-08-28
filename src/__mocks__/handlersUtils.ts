@@ -92,3 +92,97 @@ export const setupMockHandlerDeletion = () => {
     })
   );
 };
+
+export const createEventsListHandler = (mockEvents: Event[]) => {
+  return http.post('/api/events-list', async () => {
+    return HttpResponse.json(mockEvents);
+  });
+};
+
+export const monthlyRepeatEvents: Event[] = [
+  {
+    id: '1',
+    title: '31일 매월 반복',
+    date: '2025-01-31',
+    startTime: '14:00',
+    endTime: '15:00',
+    description: '31일 매월 테스트',
+    location: '테스트 장소',
+    category: '업무',
+    repeat: { type: 'monthly', interval: 1, endDate: '2025-04-30' },
+    notificationTime: 10,
+    isRecurring: true,
+  },
+  {
+    id: '2',
+    title: '31일 매월 반복',
+    date: '2025-02-28',
+    startTime: '14:00',
+    endTime: '15:00',
+    description: '31일 매월 테스트',
+    location: '테스트 장소',
+    category: '업무',
+    repeat: { type: 'monthly', interval: 1, endDate: '2025-04-30' },
+    notificationTime: 10,
+    originalId: '1',
+    isRecurring: true,
+  },
+  {
+    id: '3',
+    title: '31일 매월 반복',
+    date: '2025-03-31',
+    startTime: '14:00',
+    endTime: '15:00',
+    description: '31일 매월 테스트',
+    location: '테스트 장소',
+    category: '업무',
+    repeat: { type: 'monthly', interval: 1, endDate: '2025-04-30' },
+    notificationTime: 10,
+    originalId: '1',
+    isRecurring: true,
+  },
+];
+
+export const yearlyRepeatEvents: Event[] = [
+  {
+    id: '4',
+    title: '윤년 29일 매년 반복',
+    date: '2024-02-29',
+    startTime: '09:00',
+    endTime: '10:00',
+    description: '윤년 테스트',
+    location: '테스트 장소',
+    category: '개인',
+    repeat: { type: 'yearly', interval: 1, endDate: '2027-02-28' },
+    notificationTime: 5,
+    isRecurring: true,
+  },
+  {
+    id: '5',
+    title: '윤년 29일 매년 반복',
+    date: '2025-02-28',
+    startTime: '09:00',
+    endTime: '10:00',
+    description: '윤년 테스트',
+    location: '테스트 장소',
+    category: '개인',
+    repeat: { type: 'yearly', interval: 1, endDate: '2027-02-28' },
+    notificationTime: 5,
+    originalId: '4',
+    isRecurring: true,
+  },
+  {
+    id: '6',
+    title: '윤년 29일 매년 반복',
+    date: '2026-02-28',
+    startTime: '09:00',
+    endTime: '10:00',
+    description: '윤년 테스트',
+    location: '테스트 장소',
+    category: '개인',
+    repeat: { type: 'yearly', interval: 1, endDate: '2027-02-28' },
+    notificationTime: 5,
+    originalId: '4',
+    isRecurring: true,
+  },
+];
