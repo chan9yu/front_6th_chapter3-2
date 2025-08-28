@@ -173,3 +173,74 @@ describe('반복 일정 표시', () => {
     expect(repeatIcons[0]).toBeInTheDocument();
   });
 });
+
+describe('반복 종료', () => {
+  it('반복 종료 조건을 지정할 수 있다.', async () => {
+    setupMockHandlerCreationRepeat();
+
+    const { user } = setup(<App />);
+
+    await saveRepeatSchedule(user, {
+      title: '반복 종료 테스트',
+      date: '2025-10-01',
+      startTime: '10:00',
+      endTime: '11:00',
+      repeat: {
+        type: 'daily',
+        interval: 1,
+        endDate: '2025-10-05',
+      },
+    });
+
+    expect(screen.queryByDisplayValue('반복 종료 테스트')).not.toBeInTheDocument();
+
+    const eventList = screen.getByTestId('event-list');
+    await screen.findAllByText('반복 종료 테스트');
+    const eventItems = eventList.querySelectorAll('[data-testid="event-list"] > div');
+    const matchingEvents = Array.from(eventItems).filter((item) =>
+      item.textContent?.includes('반복 종료 테스트')
+    );
+
+    expect(matchingEvents).toHaveLength(5);
+
+    const expectedDates = ['2025-10-01', '2025-10-02', '2025-10-03', '2025-10-04', '2025-10-05'];
+    expectedDates.forEach((date) => expect(screen.getByText(date)).toBeInTheDocument());
+
+    expect(screen.queryByText('2025-09-30')).not.toBeInTheDocument();
+    expect(screen.queryByText('2025-10-06')).not.toBeInTheDocument();
+  });
+
+  it('2025-10-30까지 최대 일자로 반복 일정이 생성된다.', async () => {
+    setupMockHandlerCreationRepeat();
+
+    const { user } = setup(<App />);
+
+    await saveRepeatSchedule(user, {
+      title: '최대 일자 반복 테스트',
+      date: '2025-10-01',
+      startTime: '09:00',
+      endTime: '10:00',
+      repeat: {
+        type: 'weekly',
+        interval: 1,
+      },
+    });
+
+    expect(screen.queryByDisplayValue('최대 일자 반복 테스트')).not.toBeInTheDocument();
+
+    const eventList = screen.getByTestId('event-list');
+    await screen.findAllByText('최대 일자 반복 테스트');
+    const eventItems = eventList.querySelectorAll('[data-testid="event-list"] > div');
+    const matchingEvents = Array.from(eventItems).filter((item) =>
+      item.textContent?.includes('최대 일자 반복 테스트')
+    );
+
+    expect(matchingEvents).toHaveLength(5);
+
+    const expectedDates = ['2025-10-01', '2025-10-08', '2025-10-15', '2025-10-22', '2025-10-29'];
+    expectedDates.forEach((date) => expect(screen.getByText(date)).toBeInTheDocument());
+
+    expect(screen.queryByText('2025-09-24')).not.toBeInTheDocument();
+    expect(screen.queryByText('2025-11-05')).not.toBeInTheDocument();
+  });
+});
