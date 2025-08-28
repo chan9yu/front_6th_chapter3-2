@@ -16,7 +16,7 @@ import type { ChangeEvent, Dispatch, SetStateAction } from 'react';
 
 import { categories } from '../constants/categories';
 import { notificationOptions } from '../constants/notifications';
-import type { Event } from '../types';
+import type { Event, RepeatType } from '../types';
 import { getTimeErrorMessage } from '../utils/timeValidation';
 
 type EventEditorProps = {
@@ -29,6 +29,9 @@ type EventEditorProps = {
   location: string;
   category: string;
   isRepeating: boolean;
+  repeatType: RepeatType;
+  repeatInterval: number;
+  repeatEndDate: string;
   notificationTime: number;
   setTitle: Dispatch<SetStateAction<string>>;
   setDate: Dispatch<SetStateAction<string>>;
@@ -36,6 +39,9 @@ type EventEditorProps = {
   setLocation: Dispatch<SetStateAction<string>>;
   setCategory: Dispatch<SetStateAction<string>>;
   setIsRepeating: Dispatch<SetStateAction<boolean>>;
+  setRepeatType: Dispatch<SetStateAction<RepeatType>>;
+  setRepeatInterval: Dispatch<SetStateAction<number>>;
+  setRepeatEndDate: Dispatch<SetStateAction<string>>;
   setNotificationTime: Dispatch<SetStateAction<number>>;
   handleStartTimeChange: (event: ChangeEvent<HTMLInputElement>) => void;
   handleEndTimeChange: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -57,12 +63,18 @@ export function EventEditor({
   isRepeating,
   location,
   notificationTime,
+  repeatType,
+  repeatInterval,
+  repeatEndDate,
   setCategory,
   setDate,
   setDescription,
   setIsRepeating,
   setLocation,
   setNotificationTime,
+  setRepeatType,
+  setRepeatInterval,
+  setRepeatEndDate,
   setTitle,
   startTime,
   startTimeError,
@@ -90,6 +102,18 @@ export function EventEditor({
 
   const handleRepeatingChange = (event: ChangeEvent<HTMLInputElement>) => {
     setIsRepeating(event.target.checked);
+  };
+
+  const handleRepeatTypeChange = (event: SelectChangeEvent<string>) => {
+    setRepeatType(event.target.value as RepeatType);
+  };
+
+  const handleRepeatIntervalChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setRepeatInterval(Number(event.target.value));
+  };
+
+  const handleRepeatEndDateChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setRepeatEndDate(event.target.value);
   };
 
   const handleNotificationTimeChange = (event: SelectChangeEvent<number>) => {
@@ -197,16 +221,12 @@ export function EventEditor({
         </Select>
       </FormControl>
 
-      {/* ! 반복은 8주차 과제에 포함됩니다. 구현하고 싶어도 참아주세요~ */}
-      {/* {isRepeating && (
+      {isRepeating && (
         <Stack spacing={2}>
           <FormControl fullWidth>
             <FormLabel>반복 유형</FormLabel>
-            <Select
-              size="small"
-              value={repeatType}
-              onChange={(e) => setRepeatType(e.target.value as RepeatType)}
-            >
+            <Select size="small" value={repeatType} onChange={handleRepeatTypeChange}>
+              <MenuItem value="none">반복 안함</MenuItem>
               <MenuItem value="daily">매일</MenuItem>
               <MenuItem value="weekly">매주</MenuItem>
               <MenuItem value="monthly">매월</MenuItem>
@@ -220,22 +240,23 @@ export function EventEditor({
                 size="small"
                 type="number"
                 value={repeatInterval}
-                onChange={(e) => setRepeatInterval(Number(e.target.value))}
+                onChange={handleRepeatIntervalChange}
                 slotProps={{ htmlInput: { min: 1 } }}
               />
             </FormControl>
             <FormControl fullWidth>
-              <FormLabel>반복 종료일</FormLabel>
+              <FormLabel htmlFor="repeat-end-date">반복 종료일</FormLabel>
               <TextField
+                id="repeat-end-date"
                 size="small"
                 type="date"
                 value={repeatEndDate}
-                onChange={(e) => setRepeatEndDate(e.target.value)}
+                onChange={handleRepeatEndDateChange}
               />
             </FormControl>
           </Stack>
         </Stack>
-      )} */}
+      )}
 
       <Button
         data-testid="event-submit-button"

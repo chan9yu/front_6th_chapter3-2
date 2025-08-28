@@ -29,11 +29,11 @@ export function App() {
     isRepeating,
     setIsRepeating,
     repeatType,
-    // setRepeatType,
+    setRepeatType,
     repeatInterval,
-    // setRepeatInterval,
+    setRepeatInterval,
     repeatEndDate,
-    // setRepeatEndDate,
+    setRepeatEndDate,
     notificationTime,
     setNotificationTime,
     startTimeError,
@@ -130,12 +130,18 @@ export function App() {
           isRepeating={isRepeating}
           location={location}
           notificationTime={notificationTime}
+          repeatEndDate={repeatEndDate}
+          repeatInterval={repeatInterval}
+          repeatType={repeatType}
           setCategory={setCategory}
           setDate={setDate}
           setDescription={setDescription}
           setIsRepeating={setIsRepeating}
           setLocation={setLocation}
           setNotificationTime={setNotificationTime}
+          setRepeatEndDate={setRepeatEndDate}
+          setRepeatInterval={setRepeatInterval}
+          setRepeatType={setRepeatType}
           setTitle={setTitle}
           startTime={startTime}
           startTimeError={startTimeError}
