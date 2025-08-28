@@ -6,7 +6,7 @@ import type { ReactElement } from 'react';
 import { describe, expect, it } from 'vitest';
 
 import {
-  setupMockHandlerCreation,
+  setupMockHandlerCreationRepeat,
   setupMockHandlerMonthlyRepeat,
   setupMockHandlerYearlyRepeat,
 } from '../__mocks__/handlersUtils';
@@ -84,6 +84,8 @@ const saveRepeatSchedule = async (
 
 describe('반복 일정 기능', () => {
   it('반복 유형을 선택하여 일정을 생성할 수 있다.', async () => {
+    setupMockHandlerCreationRepeat();
+
     const { user } = setup(<App />);
 
     await saveRepeatSchedule(user, {
@@ -135,7 +137,6 @@ describe('반복 일정 기능', () => {
         repeat: {
           type: 'yearly',
           interval: 1,
-          endDate: '2027-10-28',
         },
       });
 
@@ -146,7 +147,7 @@ describe('반복 일정 기능', () => {
 
 describe('반복 일정 표시', () => {
   it('캘린더 뷰에서 반복 일정을 아이콘을 넣어 구분하여 표시한다.', async () => {
-    setupMockHandlerCreation();
+    setupMockHandlerCreationRepeat();
 
     const { user } = setup(<App />);
 

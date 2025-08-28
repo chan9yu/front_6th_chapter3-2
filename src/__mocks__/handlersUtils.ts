@@ -93,6 +93,24 @@ export const setupMockHandlerDeletion = () => {
   );
 };
 
+export const setupMockHandlerCreationRepeat = (initEvents = [] as Event[]) => {
+  const mockEvents: Event[] = [...initEvents];
+
+  server.use(
+    http.get('/api/events', () => {
+      return HttpResponse.json({ events: mockEvents });
+    }),
+    http.post('/api/events-list', async ({ request }) => {
+      const { events } = (await request.json()) as { events: Event[] };
+      events.forEach((event, index) => {
+        event.id = String(mockEvents.length + index + 1); // 간단한 ID 생성
+      });
+      mockEvents.push(...events);
+      return HttpResponse.json(events, { status: 201 });
+    })
+  );
+};
+
 export const setupMockHandlerMonthlyRepeat = () => {
   const mockEvents: Event[] = [
     {
